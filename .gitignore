@@ -1,0 +1,28 @@
+# Build output folders
+bin/
+obj/
+
+# Visual Studio metadata
+.vs/
+
+# Test results and logs
+TestResults/
+*.trx
+*.log
+
+# Configuration and environment files
+*.env
+appsettings.local.json
+
+# Lock and temporary files
+*.tmp
+*.cache
+project.assets.json
+
+# Editor-specific settings
+.vscode/
+
+# System files
+.DS_Store
+Thumbs.db
+desktop.ini
