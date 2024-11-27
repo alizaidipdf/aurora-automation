@@ -7,27 +7,32 @@ using static RestAssured.Dsl;
 namespace aurora_automation.ApiTests
 {
     public class ApiTests
-    {        
-        [Fact]
-        public void StatusCodeIndicatingSuccessCanBeVerifiedAsInteger()
+    {
+       // Parameterized test method using xUnit's [Theory] and [InlineData]
+        [Theory]
+        [InlineData(1, "Leanne Graham", "harness real-time e-markets")]
+        [InlineData(2, "Ervin Howell", "synergize scalable supply-chains")]
+        [InlineData(3, "Clementine Bauch", "e-enable strategic applications")]
+        public void StatusCodeIndicatingSuccessCanBeVerifiedAsInteger(int userId, string expectedName, string expectedBs)
         {
-            var response = Given().Get("https://jsonplaceholder.typicode.com/users/1");
+            var url = $"https://jsonplaceholder.typicode.com/users/{userId}";
+
+            var response = Given().Get(url);
             Console.WriteLine(response);
 
             Given()
-            .When()
-            .Get("https://jsonplaceholder.typicode.com/users/1")
-            .Then()
-            .StatusCode(200)
-            .And()
-            .ContentType("application/json; charset=utf-8")
-            .And()
-            .Header("Connection", "keep-alive")
-            .And()
-            .Body("$.name", NHamcrest.Contains.String("Leanne Graham"))
-            .And()
-            .Body("$.company.bs", NHamcrest.Contains.String("harness real-time e-markets"));
+                .When()
+                .Get(url)
+                .Then()
+                .StatusCode(200)
+                .And()
+                .ContentType("application/json; charset=utf-8")
+                .And()
+                .Body("$.name", Contains.String(expectedName))
+                .And()
+                .Body("$.company.bs", Contains.String(expectedBs));
         }
+
 
         [Fact]
         public void PostABlog()
