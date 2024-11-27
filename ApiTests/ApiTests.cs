@@ -1,12 +1,15 @@
 ﻿//using Microsoft.AspNetCore.Routing;
 using System.Xml.Linq;
+using aurora_automation.ApiTests.Models;
+using Microsoft.Playwright;
+using Newtonsoft.Json;
 using NHamcrest;
 using Xunit;
 using static RestAssured.Dsl;
 
 namespace aurora_automation.ApiTests
 {
-    public class ApiTests
+    public class UITests
     {
        // Parameterized test method using xUnit's [Theory] and [InlineData]
         [Theory]
@@ -37,8 +40,18 @@ namespace aurora_automation.ApiTests
         [Fact]
         public void PostABlog()
         {
+
+            var blogPost = new BlogPost
+            {
+                UserId = 1,
+                Title = "My blog post title",
+                Body = "This is the text of my latest blog post."
+            };
+
+            string jsonPayload = JsonConvert.SerializeObject(blogPost);
+
             Given()
-                .Body("{\"userId\": 1, \"title\": \"My blog post title\", \"body\": \"This is the text of my latest blog post.\" }")
+                .Body(jsonPayload)
                 .When()
                 .Post("https://jsonplaceholder.typicode.com/posts")
                 .StatusCode(201)
