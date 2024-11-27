@@ -1,8 +1,10 @@
-﻿using Xunit;
+﻿using Microsoft.AspNetCore.Routing;
+using Xunit;
+using static RestAssured.Dsl;
 
-namespace aurora_automation
+namespace aurora_automation.UnitTests
 {
-    public class Class1
+    public class UnitTests
     {
         [Fact]
         public void addTwoPlusTwo()

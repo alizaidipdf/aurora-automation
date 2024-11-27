@@ -25,6 +25,10 @@ jobs:
       run: |
         dotnet restore  # Installs the NuGet dependencies
     
-    - name: Run tests
+    - name: Run unit tests
       run: |
-        dotnet test  # Runs the xUnit tests
+        dotnet test --filter "FullyQualifiedName~UnitTests"
+
+    - name: Run API tests
+      run: |
+        dotnet test --filter "FullyQualifiedName~ApiTests"
