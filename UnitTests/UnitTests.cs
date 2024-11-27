@@ -15,7 +15,7 @@ namespace aurora_automation.UnitTests
             Assert.Equal(c, 4);
 
         }
-        [Fact(Skip = "Just for running pipeline successfully")]
+        [Fact]
         public void addThreePlusFive()
         {
             int a = 3;
