@@ -17,6 +17,19 @@ jobs:
       run: npm ci
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v2
+      with:
+        dotnet-version: '8.0'  # Specify the version of .NET you are using
+    - name: Install dependencies
+      run: |
+        dotnet restore  # Installs the NuGet dependencies
+    - name: Run unit tests
+      run: |
+        dotnet test --filter "FullyQualifiedName~UnitTests"
+    - name: Run API tests
+      run: |
+        dotnet test --filter "FullyQualifiedName~ApiTests"
     - name: Run Playwright tests
       run: npx playwright test
     - uses: actions/upload-artifact@v4
@@ -25,15 +38,3 @@ jobs:
         name: playwright-report
         path: playwright-report/
         retention-days: 30
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v2
-      with:
-        dotnet-version: '8.0'  # Specify the version of .NET you are using
-    
-    - name: Install dependencies
-      run: |
-        dotnet restore  # Installs the NuGet dependencies
-    
-    - name: Run unit tests
-      run: |
-        dotnet test --filter "FullyQualifiedName~UnitTests"
