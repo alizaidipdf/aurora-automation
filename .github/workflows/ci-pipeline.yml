@@ -1,41 +1,27 @@
-name: CI Pipeline
-
+name: Playwright Tests
 on:
   push:
-    branches:
-      - main   # Triggers the pipeline on every push to 'main' branch
+    branches: [ main, master ]
   pull_request:
-    branches:
-      - main   # Triggers the pipeline on pull requests targeting 'main'
-
+    branches: [ main, master ]
 jobs:
-  build:
-    runs-on: windows-latest  # Use the latest Windows runner
-    
+  test:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2  # Fetches the code from GitHub repository
-
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v2
+    - uses: actions/checkout@v4
+    - uses: actions/setup-node@v4
       with:
-        dotnet-version: '8.0'  # Specify the version of .NET you are using
-    
+        node-version: lts/*
     - name: Install dependencies
-      run: |
-        dotnet restore  # Installs the NuGet dependencies
-    
-    - name: Run unit tests
-      run: |
-        dotnet test --filter "FullyQualifiedName~UnitTests"
-
-    - name: Run API tests
-      run: |
-        dotnet test --filter "FullyQualifiedName~ApiTests"
-
+      run: npm ci
     - name: Install Playwright Browsers
-      run: pwsh ./bin/Debug/net8.0/playwright.ps1 install
-
-    - name: Run UI tests
-      run: |
-        dotnet test --filter "FullyQualifiedName~UITests"
+      run: npx playwright install --with-deps
+    - name: Run Playwright tests
+      run: npx playwright test
+    - uses: actions/upload-artifact@v4
+      if: ${{ !cancelled() }}
+      with:
+        name: playwright-report
+        path: playwright-report/
+        retention-days: 30
